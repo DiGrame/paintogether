@@ -143,7 +143,7 @@ body, html {
     bottom: 0;
     right: 0; }
     footer.main div.colors {
-      position: absolute;
+      position: relative;
       top: 4px;
       background-image: url(../images/colors.png);
       background-repeat: no-repeat;
