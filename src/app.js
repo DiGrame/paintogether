@@ -130,25 +130,16 @@ const mspaint = {
     );
 
     let onPaint = function() {
-//      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
-     
-//ellipse(unrestricted double x, unrestricted double y, unrestricted double radiusX, unrestricted double radiusY, unrestricted double rotation, unrestricted double startAngle, unrestricted double endAngle, optional boolean counterclockwise = false); 
-
-      
-
-     //context.strokeStyle = 'black';
+      //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());     
      //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
       
-      machine.paintContext.arc(mouse.getX()-2, mouse.getY()-2, 4);
-      
-      
-     
-
-     machine.paintContext.stroke();
+      machine.paintContex.beginPath();
+      machine.paintContext.arc(mouse.getX()-2, mouse.getY()-2, 4, 0, 2 * Math.PI, false);
+      machine.paintContext.stroke();
       machine.paintContext.fillStyle = "#" + color;
-       machine.paintContext.fill();
+      machine.paintContext.fill();
       
-
+      
        
       plots.push({ x: mouse.getX(), y: mouse.getY() });
     };
