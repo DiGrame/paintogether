@@ -137,9 +137,9 @@ const mspaint = {
       
 
      //context.strokeStyle = 'black';
-  //   machine.paintContext.rect(mouse.getX()-5, mouse.getY()-5, 10, 10);
-      machine.paintContext.ellipse(mouse.getX(), mouse.getY(), 5, 5);
+     machine.paintContext.rect(mouse.getX()-5, mouse.getY()-5, 10, 10);
      machine.paintContext.stroke();
+      machine.paintContext.fillStyle = 'black';
        machine.paintContext.fill();
       
 
@@ -155,8 +155,6 @@ const mspaint = {
         machine.paintContext.lineTo(plots[i].x, plots[i].y);
       }
       machine.paintContext.strokeStyle = "#" + color;
-      machine.paintContext.fillStyle = "#" + color;
-      
       machine.paintContext.stroke();
     }
 
@@ -193,7 +191,6 @@ const mspaint = {
   setColor: function(color) {
     this.currentIcon.style.background = "#" + color;
     this.paintContext.strokeStyle = "#" + color;
-    this.paintContext.fillStyle = "#" + color;
   }
 };
 
