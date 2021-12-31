@@ -126,8 +126,8 @@ body, html {
     position: absolute;
     left: 0px;
     top: 54px;
-    width: 1920px;
-    height: 1080px;
+    width: 1200px;
+    height: 800px;
     background: white; }
     div#sketch canvas#paint {
       width: 100%;
