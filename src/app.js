@@ -137,8 +137,8 @@ const mspaint = {
       
 
      //context.strokeStyle = 'black';
-     //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
-      machine.paintContext.roundRect(mouse.getX()-2, mouse.getY()-2, 4, 4, 200, 200);
+     machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
+     // machine.paintContext.roundRect(mouse.getX()-2, mouse.getY()-2, 4, 4, 200, 200);
 
      machine.paintContext.stroke();
       machine.paintContext.fillStyle = "#" + color;
