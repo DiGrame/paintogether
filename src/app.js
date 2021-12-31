@@ -131,10 +131,8 @@ const mspaint = {
 
     let onPaint = function() {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());     
-     //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
+     machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
       
-      machine.paintContex.beginPath();
-      machine.paintContext.arc(mouse.getX()-2, mouse.getY()-2, 4, 0, 2 * Math.PI, false);
       machine.paintContext.stroke();
       machine.paintContext.fillStyle = "#" + color;
       machine.paintContext.fill();
