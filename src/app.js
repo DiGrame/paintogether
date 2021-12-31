@@ -147,8 +147,17 @@ const mspaint = {
       machine.paintContext.moveTo(plots[0].x, plots[0].y);
 
       for (let i = 1; i < plots.length; i++) {
-        machine.paintContext.lineTo(plots[i].x, plots[i].y);
+        //machine.paintContext.lineTo(plots[i].x, plots[i].y);
+        machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
       }
+      
+
+      
+      machine.paintContext.stroke();
+      machine.paintContext.fillStyle = "#" + color;
+      machine.paintContext.fill();
+
+      
       machine.paintContext.strokeStyle = "#" + color;
       machine.paintContext.stroke();
     }
