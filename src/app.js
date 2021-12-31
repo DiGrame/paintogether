@@ -65,7 +65,7 @@ const mspaint = {
       x: 0,
       y: 0,
       getX: function() {
-        return this.x - 65;
+        return this.x;
       },
       getY: function() {
         return this.y - 55;
