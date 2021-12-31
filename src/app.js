@@ -1,6 +1,6 @@
 const pubnub = new PubNub({
-  publishKey: 'pub-c-403821ff-75ed-4fdc-a0be-55cacacd27df',
-  subscribeKey: 'sub-c-3ce0c6f8-6a16-11ec-8750-065127b61789'
+  publishKey: 'pub-c-9c9eb526-e5c8-406d-8dec-27c786c3f71a',
+  subscribeKey: 'sub-c-e0074744-6a70-11ec-a2db-9eb9413efc82'
 });
 
 let drawChannel = "draw";
