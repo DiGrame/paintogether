@@ -68,7 +68,7 @@ const mspaint = {
         return this.x;
       },
       getY: function() {
-        return this.y - 55;
+        return this.y - 108;
       }
     };
 
@@ -94,10 +94,6 @@ const mspaint = {
       function(e) {
         machine.paintContext.beginPath();
         machine.paintContext.moveTo(mouse.getX(), mouse.getY());
-
-        //initial dot
-        mouse.x += 0.1;
-        mouse.y += -0.1;
         onPaint();
 
         canvas.addEventListener("mousemove", onPaint, false);
@@ -130,16 +126,15 @@ const mspaint = {
     );
 
     let onPaint = function() {
-      //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());     
-     machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
-      
+      //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
+      //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
+
+      machine.paintContext.arc(mouse.getX(), mouse.getY(), 4, 0, 2 * Math.PI, false);
       machine.paintContext.stroke();
       machine.paintContext.fillStyle = "#" + color;
       machine.paintContext.fill();
-      
-      
-       
       plots.push({ x: mouse.getX(), y: mouse.getY() });
+
     };
 
     function drawOnCanvas(plots,color) {
@@ -148,18 +143,15 @@ const mspaint = {
 
       for (let i = 1; i < plots.length; i++) {
         //machine.paintContext.lineTo(plots[i].x, plots[i].y);
-        machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
+        //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
+        machine.paintContext.arc(mouse.getX(), mouse.getY(), 4, 0, 2 * Math.PI, false);
       }
-      
 
-      
+      machine.paintContext.strokeStyle = "#" + color;
       machine.paintContext.stroke();
       machine.paintContext.fillStyle = "#" + color;
       machine.paintContext.fill();
 
-      
-      machine.paintContext.strokeStyle = "#" + color;
-      machine.paintContext.stroke();
     }
 
     function drawFromStream(message) {
@@ -197,30 +189,6 @@ const mspaint = {
     this.paintContext.strokeStyle = "#" + color;
   }
 };
-
-/* Chat Section*/
-
-const box = document.getElementById("box");
-
-function chat() {
-  const input = document.getElementById("input");
-
-  input.addEventListener("keypress", function(e) {
-    (e.keyCode || e.charCode) === 13 &&
-      pubnub.publish({
-        // Publish new message when enter is pressed.
-        channel: chatChannel,
-        message: input.value,
-        x: (input.value = "")
-      });
-  });
-}
-
-function publishMessages(message) {
-  box.innerHTML =
-    ("" + message).replace(/[<>]/g, "") + "<br> <hr>" + box.innerHTML;
-}
-
 
 function removeClient(response) {
   document.getElementById("users").textContent = response.occupancy;

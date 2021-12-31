@@ -34,7 +34,7 @@ body, html {
   .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 8px;
     font-weight: bold;
   }
 
@@ -125,7 +125,7 @@ body, html {
   div#sketch {
     position: absolute;
     left: 0px;
-    top: 54px;
+    top: 108px;
     width: 1200px;
     height: 800px;
     background: white; }
@@ -136,7 +136,7 @@ body, html {
 
   footer.main {
     border-top: 1px solid #ffffff;
-    height: 70px;
+    height: 50px;
     background: #d9d5cf;
     position: relative;
     left: 0;
@@ -170,4 +170,3 @@ body, html {
         cursor: pointer; }
 
   /*# sourceMappingURL=app.css.map */
-  
