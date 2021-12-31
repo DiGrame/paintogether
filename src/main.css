@@ -120,22 +120,14 @@ body, html {
     bottom: 71px;
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #8b8275; }
-    section.main div.controls {
-      position: absolute;
-      background-image: url(../images/panel.png);
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      top: 2px;
-      left: 2px;
-      right: 2px;
-      height: 100%; }
+
 
   div#sketch {
     position: absolute;
-    left: 64px;
+    left: 0px;
     top: 54px;
-    width: 600px;
-    height: 400px;
+    width: 1920px;
+    height: 1080px;
     background: white; }
     div#sketch canvas#paint {
       width: 100%;
