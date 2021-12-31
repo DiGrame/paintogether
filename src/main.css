@@ -138,12 +138,12 @@ body, html {
     border-top: 1px solid #ffffff;
     height: 70px;
     background: #d9d5cf;
-    position: absolute;
+    position: relative;
     left: 0;
     bottom: 0;
     right: 0; }
     footer.main div.colors {
-      position: relative;
+      position: absolute;
       top: 4px;
       background-image: url(../images/colors.png);
       background-repeat: no-repeat;
