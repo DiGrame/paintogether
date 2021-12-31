@@ -92,11 +92,8 @@ const mspaint = {
     canvas.addEventListener(
       "mousedown",
       function(e) {
-        machine.paintContext.beginPath();
-        machine.paintContext.moveTo(mouse.getX(), mouse.getY());
         onPaint();
-
-        canvas.addEventListener("mousemove", onPaint, false);
+        // canvas.addEventListener("mousemove", onPaint, false);
       },
       false
     );
@@ -129,28 +126,31 @@ const mspaint = {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
 
-      machine.paintContext.arc(mouse.getX(), mouse.getY(), 4, 0, 2 * Math.PI, false);
-      machine.paintContext.stroke();
-      machine.paintContext.fillStyle = "#" + color;
+      machine.paintContext.beginPath();
+      machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
       machine.paintContext.fill();
+      machine.paintContext.stroke();
+
       plots.push({ x: mouse.getX(), y: mouse.getY() });
 
     };
 
     function drawOnCanvas(plots,color) {
-      machine.paintContext.beginPath();
-      machine.paintContext.moveTo(plots[0].x, plots[0].y);
 
-      for (let i = 1; i < plots.length; i++) {
-        //machine.paintContext.lineTo(plots[i].x, plots[i].y);
-        //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
-        machine.paintContext.arc(mouse.getX(), mouse.getY(), 4, 0, 2 * Math.PI, false);
+      machine.paintContext.beginPath();
+
+      for (let i = 0; i < plots.length; i++) {
+        machine.paintContext.beginPath();
+        machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
+        // machine.paintContext.fillStyle =  "#" + color;
+        machine.paintContext.fill();
+        // machine.paintContext.strokeStyle = "#" + color;
+        machine.paintContext.stroke();
       }
 
-      machine.paintContext.strokeStyle = "#" + color;
-      machine.paintContext.stroke();
-      machine.paintContext.fillStyle = "#" + color;
-      machine.paintContext.fill();
+       machine.paintContext.strokeStyle = "#" + color;
+       machine.paintContext.fillStyle = "#" + color;
+
 
     }
 
@@ -187,6 +187,7 @@ const mspaint = {
   setColor: function(color) {
     this.currentIcon.style.background = "#" + color;
     this.paintContext.strokeStyle = "#" + color;
+    this.paintContext.fillStyle = "#" + color;
   }
 };
 
