@@ -139,17 +139,19 @@ const mspaint = {
 
       machine.paintContext.beginPath();
 
+      var mycolor = machine.paintContext.strokeStyle
+
       for (let i = 0; i < plots.length; i++) {
         machine.paintContext.beginPath();
         machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
-        // machine.paintContext.fillStyle =  "#" + color;
+        machine.paintContext.fillStyle =  "#" + color;
         machine.paintContext.fill();
-        // machine.paintContext.strokeStyle = "#" + color;
+        machine.paintContext.strokeStyle = "#" + color;
         machine.paintContext.stroke();
       }
 
-       machine.paintContext.strokeStyle = "#" + color;
-       machine.paintContext.fillStyle = "#" + color;
+       // machine.paintContext.strokeStyle = mycolor;
+       // machine.paintContext.fillStyle = mycolor;
 
 
     }
