@@ -295,6 +295,7 @@ const mspaint = {
     this.currentIcon.style.background = "#" + color;
     this.paintContext.strokeStyle = "#" + color;
     this.paintContext.fillStyle = "#" + color;
+    this.paintContext..globalAlpha = 0.7;  
   },
   setLocked: function(isLocked) {
     // alert(`${isLocked}`);
