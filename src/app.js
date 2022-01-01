@@ -3,6 +3,8 @@ const pubnub = new PubNub({
   subscribeKey: 'sub-c-e0074744-6a70-11ec-a2db-9eb9413efc82'
 });
 
+const CIRCLE_SIZE = 15;
+
 let drawChannel = "draw";
 let commandChannel = "command";
 let meLocked = false;
@@ -68,11 +70,12 @@ const mspaint = {
     };
 
     /* Drawing on Paint App */
-    this.setLineWidth(5);
+    this.setLineWidth(0);
     this.setLineCap("round");
     this.setLineJoin("round");
     this.setColor("black");
     this.setLocked(false);
+    this.setDrawstyle('dots');
 
     /* Mouse Capturing Work */
     let machine = this;
@@ -86,7 +89,7 @@ const mspaint = {
 // alert(`Combination of alt + ctrlKey + ${tButton}`);
 
 
-    machine.paintContext.font = '40px sans-serif';
+    machine.paintContext.font = '50px serif';
     machine.paintContext.textAlign = 'center';
     machine.paintContext.textBaseline = 'middle';
 
@@ -137,12 +140,12 @@ const mspaint = {
     document.addEventListener('keydown', (event) => {
       const keyName = event.key;
 
-      if (keyName === 'Control' || keyName === 'Alt') {
-        // do not alert when only Control key is pressed.
-        return;
-      }
-
-      if (event.ctrlKey && event.altKey) {
+      // if (keyName === 'Control' || keyName === 'Alt') {
+      //   // do not alert when only Control key is pressed.
+      //   return;
+      // }
+      //
+      // if (event.ctrlKey && event.altKey) {
         if (keyName == 'd' || keyName == 'D'
             || keyName == 'l' || keyName == 'L'
             || keyName == 'c' || keyName == 'C'
@@ -153,18 +156,18 @@ const mspaint = {
           //  alert(`Combination of alt + ctrlKey + ${keyName}`);
           }
 
-      } else {
-        // alert(`Key pressed ${keyName}`);
-      }
+      // } else {
+      //   // alert(`Key pressed ${keyName}`);
+      // }
     }, false);
 
 
     function keyCommand (whichKey, sendMessage) {
 
       if (whichKey == 'd' || whichKey == 'D') {
-         drawStyle = 'dots';
+          machine.setDrawstyle('dots');
        } else if (whichKey == 'l' || whichKey == 'L') {
-         drawStyle = 'letters';
+         machine.setDrawstyle('letters');
        }  else if (whichKey == 'z' || whichKey == 'Z') {
          machine.setLocked(true)
       } else if (whichKey == 'x' || whichKey == 'X') {
@@ -180,6 +183,8 @@ const mspaint = {
     }
 
 
+
+
     let onPaint = function() {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
@@ -189,14 +194,15 @@ const mspaint = {
       machine.paintContext.beginPath();
 
       if (drawStyle == 'dots') {
-        machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
+        machine.paintContext.arc(mouse.getX(), mouse.getY(), CIRCLE_SIZE, 0, 2 * Math.PI, false);
+        machine.paintContext.fill();
       } else if  (drawStyle == 'letters') {
         tLetter = getRandomString(1);
         machine.paintContext.fillText(tLetter, mouse.getX(), mouse.getY());
       }
 
-      machine.paintContext.fill();
-      machine.paintContext.stroke();
+
+      // machine.paintContext.stroke();
 
       plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), letter:tLetter, color: machine.paintContext.strokeStyle});
 
@@ -227,12 +233,13 @@ const mspaint = {
             machine.paintContext.fillStyle = plots[i].color;
             machine.paintContext.strokeStyle = plots[i].color;
 
-            if (plots[i].letter =='')
-              machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
-            else
+            if (plots[i].letter =='') {
+              machine.paintContext.arc(plots[i].x, plots[i].y, CIRCLE_SIZE, 0, 2 * Math.PI, false);
+              machine.paintContext.fill();
+            } else
               machine.paintContext.fillText(plots[i].letter, plots[i].x, plots[i].y);
-            machine.paintContext.fill();
-            machine.paintContext.stroke();
+
+            // machine.paintContext.stroke();
         }
       }
 
@@ -295,7 +302,6 @@ const mspaint = {
     this.currentIcon.style.background = "#" + color;
     this.paintContext.strokeStyle = "#" + color;
     this.paintContext.fillStyle = "#" + color;
-    this.paintContext..globalAlpha = 0.7;  
   },
   setLocked: function(isLocked) {
     // alert(`${isLocked}`);
@@ -303,6 +309,18 @@ const mspaint = {
     txt = "";
     if (meLocked) txt = "* LOCKED * "
     document.getElementById("myID").textContent = txt;
+  },
+  setDrawstyle: function(dstyle){
+
+    drawStyle = dstyle;
+
+     if (drawStyle == 'dots') {
+         this.paintContext.globalAlpha = 0.5;
+    } else if (drawStyle == 'letters')  {
+        this.paintContext.globalAlpha = 0.75;
+    }
+    //  alert(drawStyle, this.paintContext.globalAlpha)
+
   }
 
 
