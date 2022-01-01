@@ -121,6 +121,44 @@ const mspaint = {
       false
     );
 
+
+
+    document.addEventListener('keydown', (event) => {
+      const keyName = event.key;
+
+      if (keyName === 'Control' || keyName === 'Alt') {
+        // do not alert when only Control key is pressed.
+        return;
+      }
+
+      if (event.ctrlKey && event.altKey) {
+        if (keyName == 'd' || keyName == 'D' || keyName == 'l' || keyName == 'L' || keyName == 'c' || keyName == 'C') {
+            keyCommand(keyName, true);
+        }
+          // alert(`Combination of alt + ctrlKey + ${keyName}`);
+      } else {
+        // alert(`Key pressed ${keyName}`);
+      }
+    }, false);
+
+
+    function keyCommand (whichKey, sendMessage) {
+
+      if (whichKey == 'd' || whichKey == 'D') {
+         drawStyle = 'dots';
+       } else if (whichKey == 'l' || whichKey == 'L') {
+         drawStyle = 'letters';
+       } else if (whichKey == 'c' || whichKey == 'C') {
+           machine.paintContext.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (sendMessage)
+        sendCommand(whichKey);
+
+    }
+
+
+
     let onPaint = function() {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
@@ -189,17 +227,19 @@ const mspaint = {
 
 
     function sendCommand(command) {
-      //Publish command  to channel
+
       pubnub.publish({
-        // channel: commandChannel,
-        // message: {
-        //   color: this.getAttribute("data-color")
-        // }
+        channel: commandChannel,
+        message: {
+          command: command
+        }
       });
+
     }
 
     function commandReceived(message) {
-      if (!message || message.plots.length < 1) return;
+      if (!message) return;
+      keyCommand(message.command, false);
 
     }
 
@@ -278,30 +318,3 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
-
-document.addEventListener('keydown', (event) => {
-  const keyName = event.key;
-
-  if (keyName === 'Control') {
-    // do not alert when only Control key is pressed.
-    return;
-  }
-
-  if (event.ctrlKey) {
-    // Even though event.key is not 'Control' (e.g., 'a' is pressed),
-    // event.ctrlKey may be true if Ctrl key is pressed at the same time.
-    alert(`Combination of ctrlKey + ${keyName}`);
-  } else {
-    alert(`Key pressed ${keyName}`);
-  }
-}, false);
-
-document.addEventListener('keyup', (event) => {
-  const keyName = event.key;
-
-  // As the user releases the Ctrl key, the key is no longer active,
-  // so event.ctrlKey is false.
-  if (keyName === 'Control') {
-    alert('Control key was released');
-  }
-}, false);
