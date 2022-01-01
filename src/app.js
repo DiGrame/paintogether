@@ -5,9 +5,10 @@ const pubnub = new PubNub({
 
 let drawChannel = "draw";
 let commandChannel = "command";
+let locked = false;
 
 let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-document.getElementById("myID").textContent = myID;
+
 
 let drawStyle = 'dots';
 
@@ -71,9 +72,19 @@ const mspaint = {
     this.setLineCap("round");
     this.setLineJoin("round");
     this.setColor("black");
+    this.setLocked(false);
 
     /* Mouse Capturing Work */
     let machine = this;
+
+
+    /* Color changing */
+    let tcolorButtons = document.getElementsByClassName("color");
+    tButton = Math.floor(Math.random() * tcolorButtons.length)
+    machine.setColor(tcolorButtons[tButton].getAttribute("data-color"));
+
+// alert(`Combination of alt + ctrlKey + ${tButton}`);
+
 
     machine.paintContext.font = '40px sans-serif';
     machine.paintContext.textAlign = 'center';
@@ -100,7 +111,7 @@ const mspaint = {
     canvas.addEventListener(
       "mouseout",
       function() {
-        canvas.removeEventListener("mousemove", onPaint, false);
+        // canvas.removeEventListener("mousemove", onPaint, false);
       },
       false
     );
@@ -108,7 +119,7 @@ const mspaint = {
     canvas.addEventListener(
       "mouseup",
       function() {
-        canvas.removeEventListener("mousemove", onPaint, false);
+//        canvas.removeEventListener("mousemove", onPaint, false);
         pubnub.publish({
           channel: drawChannel,
           message: {
@@ -132,10 +143,16 @@ const mspaint = {
       }
 
       if (event.ctrlKey && event.altKey) {
-        if (keyName == 'd' || keyName == 'D' || keyName == 'l' || keyName == 'L' || keyName == 'c' || keyName == 'C') {
+        if (keyName == 'd' || keyName == 'D'
+            || keyName == 'l' || keyName == 'L'
+            || keyName == 'c' || keyName == 'C'
+            || keyName == 'q' || keyName == 'Q'
+            || keyName == 'w' || keyName == 'W'
+          ) {
             keyCommand(keyName, true);
-        }
-          // alert(`Combination of alt + ctrlKey + ${keyName}`);
+            alert(`Combination of alt + ctrlKey + ${keyName}`);
+          }
+
       } else {
         // alert(`Key pressed ${keyName}`);
       }
@@ -148,7 +165,12 @@ const mspaint = {
          drawStyle = 'dots';
        } else if (whichKey == 'l' || whichKey == 'L') {
          drawStyle = 'letters';
-       } else if (whichKey == 'c' || whichKey == 'C') {
+       }  else if (whichKey == 'q' || whichKey == 'Q') {
+         this.setLocked(true)
+       } else if (whichKey == 'w' || whichKey == 'W') {
+         this.setLocked(false)
+       }
+       else if (whichKey == 'c' || whichKey == 'C') {
            machine.paintContext.clearRect(0, 0, canvas.width, canvas.height);
       }
 
@@ -158,11 +180,11 @@ const mspaint = {
     }
 
 
-
     let onPaint = function() {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
 
+      if (locked) return;
       let tLetter = '';
       machine.paintContext.beginPath();
 
@@ -273,7 +295,13 @@ const mspaint = {
     this.currentIcon.style.background = "#" + color;
     this.paintContext.strokeStyle = "#" + color;
     this.paintContext.fillStyle = "#" + color;
+  },
+  setLocked: function(isLocked) {
+    locked = isLocked;
+    document.getElementById("myID").textContent = locked;
   }
+
+
 };
 
 /* Init Section */
