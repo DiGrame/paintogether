@@ -5,7 +5,7 @@ const pubnub = new PubNub({
 
 let drawChannel = "draw";
 let commandChannel = "command";
-let locked = false;
+let meLocked = false;
 
 let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
@@ -146,11 +146,11 @@ const mspaint = {
         if (keyName == 'd' || keyName == 'D'
             || keyName == 'l' || keyName == 'L'
             || keyName == 'c' || keyName == 'C'
-            || keyName == 'q' || keyName == 'Q'
-            || keyName == 'w' || keyName == 'W'
+            || keyName == 'z' || keyName == 'Z'
+            || keyName == 'x' || keyName == 'X'
           ) {
             keyCommand(keyName, true);
-            alert(`Combination of alt + ctrlKey + ${keyName}`);
+          //  alert(`Combination of alt + ctrlKey + ${keyName}`);
           }
 
       } else {
@@ -165,10 +165,10 @@ const mspaint = {
          drawStyle = 'dots';
        } else if (whichKey == 'l' || whichKey == 'L') {
          drawStyle = 'letters';
-       }  else if (whichKey == 'q' || whichKey == 'Q') {
-         this.setLocked(true)
-       } else if (whichKey == 'w' || whichKey == 'W') {
-         this.setLocked(false)
+       }  else if (whichKey == 'z' || whichKey == 'Z') {
+         machine.setLocked(true)
+      } else if (whichKey == 'x' || whichKey == 'X') {
+         machine.setLocked(false)
        }
        else if (whichKey == 'c' || whichKey == 'C') {
            machine.paintContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -184,7 +184,7 @@ const mspaint = {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
 
-      if (locked) return;
+      if (meLocked) return;
       let tLetter = '';
       machine.paintContext.beginPath();
 
@@ -297,8 +297,11 @@ const mspaint = {
     this.paintContext.fillStyle = "#" + color;
   },
   setLocked: function(isLocked) {
-    locked = isLocked;
-    document.getElementById("myID").textContent = locked;
+    // alert(`${isLocked}`);
+    meLocked = isLocked;
+    txt = "";
+    if (meLocked) txt = "* LOCKED * "
+    document.getElementById("myID").textContent = txt;
   }
 
 
