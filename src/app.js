@@ -4,8 +4,10 @@ const pubnub = new PubNub({
 });
 
 let drawChannel = "draw";
-let chatChannel = "chat";
 let colorChannel = "color";
+
+let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+document.getElementById("myID").textContent = myID;
 
 /* Drawing Section */
 
@@ -23,33 +25,21 @@ const mspaint = {
     this.canvas = canvas;
     this.paintContext = canvas.getContext("2d");
 
-    let universalColor = "";
-
     pubnub.addListener({
       message: function(response) {
         if (response.channel === "draw") {
           drawFromStream(response.message);
         }
-        if (response.channel === "chat") {
-          publishMessages(response.message);
-        }
         if (response.channel === "color") {
-          universalColor = response.message.color;
+          // universalColor = response.message.color;
         }
       },
       presence: function(presenceEvent) {
-        if (presenceEvent.action === "join") {
-          addClient(presenceEvent);
-        }
-
-        if (presenceEvent.action === "timeout") {
-          removeClient(presenceEvent);
-        }
       }
     });
 
     pubnub.subscribe({
-      channels: [drawChannel, chatChannel, colorChannel],
+      channels: [drawChannel, colorChannel],
       withPresence: true
     });
 
@@ -76,7 +66,7 @@ const mspaint = {
     this.setLineWidth(5);
     this.setLineCap("round");
     this.setLineJoin("round");
-    this.setColor("black");
+    this.setColor("red");
 
     /* Mouse Capturing Work */
     let machine = this;
@@ -127,38 +117,41 @@ const mspaint = {
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
 
       machine.paintContext.beginPath();
-      machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
+      // machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
+      machine.paintContext.fillText("Hello World", mouse.getX(), mouse.getY());
       machine.paintContext.fill();
       machine.paintContext.stroke();
 
-      plots.push({ x: mouse.getX(), y: mouse.getY() });
+      plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), color: machine.paintContext.strokeStyle});
 
     };
 
-    function drawOnCanvas(plots,color) {
+    function drawOnCanvas(plots) {
 
       machine.paintContext.beginPath();
 
       var mycolor = machine.paintContext.strokeStyle
 
       for (let i = 0; i < plots.length; i++) {
-        machine.paintContext.beginPath();
-        machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
-        machine.paintContext.fillStyle =  "#" + color;
-        machine.paintContext.fill();
-        machine.paintContext.strokeStyle = "#" + color;
-        machine.paintContext.stroke();
+        if (plots[i].id != myID) {
+            machine.paintContext.beginPath();
+            machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
+            machine.paintContext.fillStyle = plots[i].color;
+            machine.paintContext.fill();
+            machine.paintContext.strokeStyle = plots[i].color;
+            machine.paintContext.stroke();
+        }
       }
 
-       // machine.paintContext.strokeStyle = mycolor;
-       // machine.paintContext.fillStyle = mycolor;
+       machine.paintContext.strokeStyle = mycolor;
+       machine.paintContext.fillStyle = mycolor;
 
 
     }
 
     function drawFromStream(message) {
       if (!message || message.plots.length < 1) return;
-      drawOnCanvas(message.plots, universalColor);
+      drawOnCanvas(message.plots);
     }
 
     /* Color changing */
@@ -169,10 +162,10 @@ const mspaint = {
 
         //Publish color to channel
         pubnub.publish({
-          channel: colorChannel,
-          message: {
-            color: this.getAttribute("data-color")
-          }
+          // channel: colorChannel,
+          // message: {
+          //   color: this.getAttribute("data-color")
+          // }
         });
       });
     }
@@ -193,13 +186,6 @@ const mspaint = {
   }
 };
 
-function removeClient(response) {
-  document.getElementById("users").textContent = response.occupancy;
-}
-
-function addClient(response) {
-  document.getElementById("users").textContent = response.occupancy;
-}
 /* Init Section */
 
 window.download = function() {
@@ -213,7 +199,6 @@ window.download = function() {
 
 window.onload = function() {
   mspaint.start("#sketch", "#paint");
-  chat();
 };
 
 /* Modal Section */
