@@ -4,10 +4,14 @@ const pubnub = new PubNub({
 });
 
 let drawChannel = "draw";
-let colorChannel = "color";
+let commandChannel = "command";
 
 let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 document.getElementById("myID").textContent = myID;
+
+let drawStyle = 'dots';
+
+//dots, letters
 
 /* Drawing Section */
 
@@ -30,8 +34,8 @@ const mspaint = {
         if (response.channel === "draw") {
           drawFromStream(response.message);
         }
-        if (response.channel === "color") {
-          // universalColor = response.message.color;
+        if (response.channel === "command") {
+          commandReceived(response.message)
         }
       },
       presence: function(presenceEvent) {
@@ -39,7 +43,7 @@ const mspaint = {
     });
 
     pubnub.subscribe({
-      channels: [drawChannel, colorChannel],
+      channels: [drawChannel, commandChannel],
       withPresence: true
     });
 
@@ -66,10 +70,15 @@ const mspaint = {
     this.setLineWidth(5);
     this.setLineCap("round");
     this.setLineJoin("round");
-    this.setColor("red");
+    this.setColor("black");
 
     /* Mouse Capturing Work */
     let machine = this;
+
+    machine.paintContext.font = '40px sans-serif';
+    machine.paintContext.textAlign = 'center';
+    machine.paintContext.textBaseline = 'middle';
+
     canvas.addEventListener(
       "mousemove",
       function(e) {
@@ -116,15 +125,35 @@ const mspaint = {
       //      machine.paintContext.lineTo(mouse.getX(), mouse.getY());
       //machine.paintContext.rect(mouse.getX()-2, mouse.getY()-2, 4, 4);
 
+      let tLetter = '';
       machine.paintContext.beginPath();
-      // machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
-      machine.paintContext.fillText("Hello World", mouse.getX(), mouse.getY());
+
+      if (drawStyle == 'dots') {
+        machine.paintContext.arc(mouse.getX(), mouse.getY(), 10, 0, 2 * Math.PI, false);
+      } else if  (drawStyle == 'letters') {
+        tLetter = getRandomString(1);
+        machine.paintContext.fillText(tLetter, mouse.getX(), mouse.getY());
+      }
+
       machine.paintContext.fill();
       machine.paintContext.stroke();
 
-      plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), color: machine.paintContext.strokeStyle});
+      plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), letter:tLetter, color: machine.paintContext.strokeStyle});
 
     };
+
+
+
+    function getRandomString(length) {
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var result = '';
+        for ( var i = 0; i < length; i++ ) {
+            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        return result;
+    }
+
+
 
     function drawOnCanvas(plots) {
 
@@ -135,10 +164,14 @@ const mspaint = {
       for (let i = 0; i < plots.length; i++) {
         if (plots[i].id != myID) {
             machine.paintContext.beginPath();
-            machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
             machine.paintContext.fillStyle = plots[i].color;
-            machine.paintContext.fill();
             machine.paintContext.strokeStyle = plots[i].color;
+
+            if (plots[i].letter =='')
+              machine.paintContext.arc(plots[i].x, plots[i].y, 10, 0, 2 * Math.PI, false);
+            else
+              machine.paintContext.fillText(plots[i].letter, plots[i].x, plots[i].y);
+            machine.paintContext.fill();
             machine.paintContext.stroke();
         }
       }
@@ -154,19 +187,36 @@ const mspaint = {
       drawOnCanvas(message.plots);
     }
 
+
+    function sendCommand(command) {
+      //Publish command  to channel
+      pubnub.publish({
+        // channel: commandChannel,
+        // message: {
+        //   color: this.getAttribute("data-color")
+        // }
+      });
+    }
+
+    function commandReceived(message) {
+      if (!message || message.plots.length < 1) return;
+
+    }
+
+    function showChar(e){
+      alert(
+        "Key Pressed: " + e.key + "\n"
+        + "CTRL key pressed: " + e.ctrlKey + "\n"
+      );
+    }
+
     /* Color changing */
     let colorButtons = document.getElementsByClassName("color");
     for (let index = 0; index < colorButtons.length; index++) {
       colorButtons[index].addEventListener("click", function() {
         machine.setColor(this.getAttribute("data-color"));
 
-        //Publish color to channel
-        pubnub.publish({
-          // channel: colorChannel,
-          // message: {
-          //   color: this.getAttribute("data-color")
-          // }
-        });
+
       });
     }
   },
@@ -228,3 +278,30 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
+
+document.addEventListener('keydown', (event) => {
+  const keyName = event.key;
+
+  if (keyName === 'Control') {
+    // do not alert when only Control key is pressed.
+    return;
+  }
+
+  if (event.ctrlKey) {
+    // Even though event.key is not 'Control' (e.g., 'a' is pressed),
+    // event.ctrlKey may be true if Ctrl key is pressed at the same time.
+    alert(`Combination of ctrlKey + ${keyName}`);
+  } else {
+    alert(`Key pressed ${keyName}`);
+  }
+}, false);
+
+document.addEventListener('keyup', (event) => {
+  const keyName = event.key;
+
+  // As the user releases the Ctrl key, the key is no longer active,
+  // so event.ctrlKey is false.
+  if (keyName === 'Control') {
+    alert('Control key was released');
+  }
+}, false);
