@@ -330,7 +330,7 @@ const mspaint = {
     // alert(`${isLocked}`);
     meLocked = isLocked;
     txt = "";
-    if (meLocked) txt = "* LOCKED * "
+    if (meLocked) txt = "*** LOCKED *** "
     document.getElementById("myID").textContent = txt;
   },
   setDrawstyle: function(dstyle){
