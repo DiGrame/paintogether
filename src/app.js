@@ -338,9 +338,9 @@ const mspaint = {
     drawStyle = dstyle;
 
      if (drawStyle == 'dots') {
-         this.paintContext.globalAlpha = 0.6;
+         this.paintContext.globalAlpha = 0.7;
     } else if (drawStyle == 'letters')  {
-        this.paintContext.globalAlpha = 0.8;
+        this.paintContext.globalAlpha = 0.9;
     }
     //  alert(drawStyle, this.paintContext.globalAlpha)
 
