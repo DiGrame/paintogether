@@ -123,14 +123,14 @@ const mspaint = {
       "mouseup",
       function() {
 //        canvas.removeEventListener("mousemove", onPaint, false);
-        pubnub.publish({
-          channel: drawChannel,
-          message: {
-            plots: plots
-          }
-        });
-
-        plots = [];
+        // pubnub.publish({
+        //   channel: drawChannel,
+        //   message: {
+        //     plots: plots
+        //   }
+        // });
+        //
+        // plots = [];
       },
       false
     );
@@ -205,6 +205,16 @@ const mspaint = {
       // machine.paintContext.stroke();
 
       plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), letter:tLetter, color: machine.paintContext.strokeStyle});
+
+      pubnub.publish({
+        channel: drawChannel,
+        message: {
+          plots: plots
+        }
+      });
+
+      plots = [];
+
 
     };
 
@@ -315,9 +325,9 @@ const mspaint = {
     drawStyle = dstyle;
 
      if (drawStyle == 'dots') {
-         this.paintContext.globalAlpha = 0.5;
+         this.paintContext.globalAlpha = 0.6;
     } else if (drawStyle == 'letters')  {
-        this.paintContext.globalAlpha = 0.75;
+        this.paintContext.globalAlpha = 0.8;
     }
     //  alert(drawStyle, this.paintContext.globalAlpha)
 

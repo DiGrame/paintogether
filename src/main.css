@@ -46,7 +46,7 @@ body, html {
   }
 
   body {
-    background: #808080;
+    background: #000000;
     font-family: Arial, sans-serif; }
 
   div#app {
@@ -55,14 +55,15 @@ body, html {
 
   header.main {
     height: 50px;
-    background: #d9d5cf;
+    background: #0;
     position: relative;
-    border-bottom: 1px solid #8b8275;
+    border-bottom: 0px solid #0;
     font-smooth: never;
     -webkit-font-smoothing: none; }
     header.main h1.title {
       z-index: 900;
       font-size: 14px;
+      font-weight: normal;
       margin: 0;
       padding: 0;
       color: white;
@@ -85,12 +86,12 @@ body, html {
       header.main ul.menus li {
         display: inline-block; }
         header.main ul.menus li a {
-          font-size: 13px;
+          font-size: 12px;
           text-decoration: none;
           padding-left: 5px;
           padding-right: 5px;
           height: 100%;
-          color: black;
+          color: white;
           line-height: 25px;
           position: relative; }
           header.main ul.menus li a:after {
@@ -109,7 +110,7 @@ body, html {
       left: 2px;
       height: 23px;
       position: absolute;
-      background: linear-gradient(to right, #0b2568, #bbd7f5); }
+      background: linear-gradient(to right, #940000, #f2cbcb); }
 
   section.main {
     width: 60px;
@@ -126,7 +127,7 @@ body, html {
     position: absolute;
     left: 0px;
     top: 108px;
-    width: 1200px;
+    width: 1280px;
     height: 800px;
     background: white; }
     div#sketch canvas#paint {
@@ -135,16 +136,16 @@ body, html {
       cursor: pointer; }
 
   footer.main {
-    border-top: 1px solid #ffffff;
-    height: 50px;
-    background: #d9d5cf;
+    border-top: 1px solid black;
+    height: 40px;
+    background: black;
     position: relative;
     left: 0;
     bottom: 0;
     right: 0; }
     footer.main div.colors {
       position: absolute;
-      top: 4px;
+      top: 0px;
       background-image: url(../images/colors.png);
       background-repeat: no-repeat;
       background-size: auto 100%;
@@ -152,15 +153,15 @@ body, html {
       right: 0;
       height: 40px;
       padding-left: 43px;
-      padding-top: 2px;
+      padding-top: 1px;
       width: 300px; }
       footer.main div.colors div#current {
         position: absolute;
-        left: 8px;
-        top: 9px;
+        left: 2px;
+        top: 3px;
         background: black;
-        width: 15px;
-        height: 15px; }
+        width: 35px;
+        height: 35px; }
       footer.main div.colors div.color {
         width: 16px;
         height: 16px;
