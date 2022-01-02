@@ -4,6 +4,7 @@ const pubnub = new PubNub({
 });
 
 const CIRCLE_SIZE = 20;
+const RECTANGLE_SIZE = 30;
 
 let drawChannel = "draw";
 let commandChannel = "command";
@@ -12,9 +13,7 @@ let meLocked = false;
 let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 
-let drawStyle = 'dots';
-
-//dots, letters
+let drawStyle = 'dots'; //dots, letters, rectangles
 
 /* Drawing Section */
 
@@ -151,6 +150,7 @@ const mspaint = {
             || keyName == 'c' || keyName == 'C'
             || keyName == 'z' || keyName == 'Z'
             || keyName == 'x' || keyName == 'X'
+            || keyName == 'r' || keyName == 'R'
           ) {
             keyCommand(keyName, true);
           //  alert(`Combination of alt + ctrlKey + ${keyName}`);
@@ -168,6 +168,8 @@ const mspaint = {
           machine.setDrawstyle('dots');
        } else if (whichKey == 'l' || whichKey == 'L') {
          machine.setDrawstyle('letters');
+       } else if (whichKey == 'r' || whichKey == 'R') {
+         machine.setDrawstyle('rectangles');
        }  else if (whichKey == 'z' || whichKey == 'Z') {
          machine.setLocked(true)
       } else if (whichKey == 'x' || whichKey == 'X') {
@@ -196,7 +198,13 @@ const mspaint = {
       if (drawStyle == 'dots') {
         machine.paintContext.arc(mouse.getX(), mouse.getY(), CIRCLE_SIZE, 0, 2 * Math.PI, false);
         machine.paintContext.fill();
-      } else if  (drawStyle == 'letters') {
+      }
+      else if (drawStyle == 'rectangles') {
+        tLetter = "rect"
+        machine.paintContext.rect(mouse.getX() - RECTANGLE_SIZE/2, mouse.getY() - RECTANGLE_SIZE/2, RECTANGLE_SIZE, RECTANGLE_SIZE);
+        machine.paintContext.fill();
+      }
+      else if  (drawStyle == 'letters') {
         tLetter = getRandomString(1);
         machine.paintContext.fillText(tLetter, mouse.getX(), mouse.getY());
       }
@@ -246,7 +254,12 @@ const mspaint = {
             if (plots[i].letter =='') {
               machine.paintContext.arc(plots[i].x, plots[i].y, CIRCLE_SIZE, 0, 2 * Math.PI, false);
               machine.paintContext.fill();
-            } else
+            }
+            else if (plots[i].letter =='rect') {
+              machine.paintContext.rect(plots[i].x - RECTANGLE_SIZE/2,plots[i].y - RECTANGLE_SIZE/2, RECTANGLE_SIZE, RECTANGLE_SIZE);
+              machine.paintContext.fill();
+            }
+            else
               machine.paintContext.fillText(plots[i].letter, plots[i].x, plots[i].y);
 
             // machine.paintContext.stroke();
