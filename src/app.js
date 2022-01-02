@@ -3,7 +3,7 @@ const pubnub = new PubNub({
   subscribeKey: 'sub-c-e0074744-6a70-11ec-a2db-9eb9413efc82'
 });
 
-const CIRCLE_SIZE = 15;
+const CIRCLE_SIZE = 20;
 
 let drawChannel = "draw";
 let commandChannel = "command";
@@ -89,7 +89,7 @@ const mspaint = {
 // alert(`Combination of alt + ctrlKey + ${tButton}`);
 
 
-    machine.paintContext.font = '50px serif';
+    machine.paintContext.font = 'normal 50px serif';
     machine.paintContext.textAlign = 'center';
     machine.paintContext.textBaseline = 'middle';
 

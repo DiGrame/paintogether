@@ -158,10 +158,10 @@ body, html {
       footer.main div.colors div#current {
         position: absolute;
         left: 2px;
-        top: 3px;
+        top: 2px;
         background: black;
-        width: 35px;
-        height: 35px; }
+        width: 34px;
+        height: 37px; }
       footer.main div.colors div.color {
         width: 16px;
         height: 16px;
