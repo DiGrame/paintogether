@@ -57,6 +57,8 @@ const mspaint = {
 
     this.currentIcon = document.getElementById("current");
 
+
+
     let mouse = {
       x: 0,
       y: 0,
@@ -91,6 +93,7 @@ const mspaint = {
     machine.paintContext.font = 'normal 50px serif';
     machine.paintContext.textAlign = 'center';
     machine.paintContext.textBaseline = 'middle';
+
 
     canvas.addEventListener(
       "mousemove",
@@ -151,6 +154,7 @@ const mspaint = {
             || keyName == 'z' || keyName == 'Z'
             || keyName == 'x' || keyName == 'X'
             || keyName == 'r' || keyName == 'R'
+            || keyName == 'h' || keyName == 'H'
           ) {
             keyCommand(keyName, true);
           //  alert(`Combination of alt + ctrlKey + ${keyName}`);
@@ -170,6 +174,8 @@ const mspaint = {
          machine.setDrawstyle('letters');
        } else if (whichKey == 'r' || whichKey == 'R') {
          machine.setDrawstyle('rectangles');
+       } else if (whichKey == 'h' || whichKey == 'H') {
+         machine.setDrawstyle('hands');
        }  else if (whichKey == 'z' || whichKey == 'Z') {
          machine.setLocked(true)
       } else if (whichKey == 'x' || whichKey == 'X') {
@@ -195,6 +201,7 @@ const mspaint = {
       let tLetter = '';
       machine.paintContext.beginPath();
 
+
       if (drawStyle == 'dots') {
         machine.paintContext.arc(mouse.getX(), mouse.getY(), CIRCLE_SIZE, 0, 2 * Math.PI, false);
         machine.paintContext.fill();
@@ -208,7 +215,22 @@ const mspaint = {
         tLetter = getRandomString(1);
         machine.paintContext.fillText(tLetter, mouse.getX(), mouse.getY());
       }
+      else if  (drawStyle == 'hands') {
 
+
+        // machine.paintContext.drawImage(image, mouse.getX() - image.width/2, mouse.getY() - image.height/2);
+        // drawRotatedImage (machine.paintContext, image, mouse.getX() - image.width/2, mouse.getY() - image.height/2, 90);
+        var tnagle = Math.random() * 45;
+        var tsign = 1;
+        if (Math.random() > 0.5) tsign = -1;
+        tnagle = tsign *tnagle;
+
+        var thand = 1 + Math.floor(Math.random() * 4);
+        // thand = 3;
+        var strhand = 'hand'.concat(thand);
+         image = document.getElementById(strhand);
+        drawRotatedImage (machine.paintContext, image, mouse.getX(), mouse.getY(), tnagle);
+      }
 
       // machine.paintContext.stroke();
 
@@ -226,6 +248,28 @@ const mspaint = {
 
     };
 
+
+    var TO_RADIANS = Math.PI/180;
+    function drawRotatedImage(ctx, image, x, y, angle)
+    {
+        // save the current co-ordinate system
+        // before we screw with it
+        ctx.save();
+
+        // move to the middle of where we want to draw our image
+        ctx.translate(x, y);
+
+        // rotate around that point, converting our
+        // angle from degrees to radians
+        ctx.rotate(angle * TO_RADIANS);
+
+        // draw it up and to the left by half the width
+        // and height of the image
+        ctx.drawImage(image, -(image.width/2), -(image.height/2));
+
+        // and restore the co-ords to how they were when we began
+        ctx.restore();
+    }
 
 
     function getRandomString(length) {
@@ -341,7 +385,10 @@ const mspaint = {
          this.paintContext.globalAlpha = 0.7;
     } else if (drawStyle == 'letters')  {
         this.paintContext.globalAlpha = 0.9;
+    }else if (drawStyle == 'hands')  {
+            this.paintContext.globalAlpha = 0.9;
     }
+
     //  alert(drawStyle, this.paintContext.globalAlpha)
 
   }
