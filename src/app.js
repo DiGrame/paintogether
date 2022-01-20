@@ -13,7 +13,7 @@ let meLocked = false;
 let myID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 
-let drawStyle = 'dots'; //dots, letters, rectangles
+let drawStyle = 'rectangles'; //dots, letters, rectangles
 
 /* Drawing Section */
 
