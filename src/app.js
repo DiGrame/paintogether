@@ -4,7 +4,7 @@ const pubnub = new PubNub({
 });
 
 const CIRCLE_SIZE = 20;
-const RECTANGLE_SIZE = 30;
+var RECTANGLE_SIZE = 30;
 
 let drawChannel = "draw";
 let commandChannel = "command";
