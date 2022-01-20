@@ -3,8 +3,8 @@ const pubnub = new PubNub({
   subscribeKey: 'sub-c-e0074744-6a70-11ec-a2db-9eb9413efc82'
 });
 
-const CIRCLE_SIZE = 20;
-const RECTANGLE_SIZE = 30;
+const CIRCLE_SIZE = 15;
+const RECTANGLE_SIZE = 20;
 var shapeSize = 0;
 
 let drawChannel = "draw";
@@ -204,13 +204,13 @@ const mspaint = {
 
 
       if (drawStyle == 'dots') {
-        shapeSize = CIRCLE_SIZE + Math.floor(Math.random() * 10);
+        shapeSize = CIRCLE_SIZE + Math.floor(Math.random() * 15);
         machine.paintContext.arc(mouse.getX(), mouse.getY(), shapeSize, 0, 2 * Math.PI, false);
         machine.paintContext.fill();
       }
       else if (drawStyle == 'rectangles') {
         tLetter = "rect"
-        shapeSize = RECTANGLE_SIZE + Math.floor(Math.random() * 10);
+        shapeSize = RECTANGLE_SIZE + Math.floor(Math.random() * 20);
         machine.paintContext.rect(mouse.getX() - shapeSize/2, mouse.getY() - shapeSize/2, shapeSize, shapeSize);
         machine.paintContext.fill();
       }
