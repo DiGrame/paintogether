@@ -4,7 +4,8 @@ const pubnub = new PubNub({
 });
 
 const CIRCLE_SIZE = 20;
-var RECTANGLE_SIZE = 30;
+const RECTANGLE_SIZE = 30;
+var shapeSize = 0;
 
 let drawChannel = "draw";
 let commandChannel = "command";
@@ -203,13 +204,14 @@ const mspaint = {
 
 
       if (drawStyle == 'dots') {
-        machine.paintContext.arc(mouse.getX(), mouse.getY(), CIRCLE_SIZE, 0, 2 * Math.PI, false);
+        shapeSize = CIRCLE_SIZE + Math.floor(Math.random() * 10);
+        machine.paintContext.arc(mouse.getX(), mouse.getY(), shapeSize, 0, 2 * Math.PI, false);
         machine.paintContext.fill();
       }
       else if (drawStyle == 'rectangles') {
         tLetter = "rect"
-        RECTANGLE_SIZE = Math.floor(Math.random() * 10) + 15;
-        machine.paintContext.rect(mouse.getX() - RECTANGLE_SIZE/2, mouse.getY() - RECTANGLE_SIZE/2, RECTANGLE_SIZE, RECTANGLE_SIZE);
+        shapeSize = RECTANGLE_SIZE + Math.floor(Math.random() * 10);
+        machine.paintContext.rect(mouse.getX() - shapeSize/2, mouse.getY() - shapeSize/2, shapeSize, shapeSize);
         machine.paintContext.fill();
       }
       else if  (drawStyle == 'letters') {
@@ -235,7 +237,7 @@ const mspaint = {
 
       // machine.paintContext.stroke();
 
-      plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), letter:tLetter, color: machine.paintContext.strokeStyle});
+      plots.push({id:myID, x: mouse.getX(), y: mouse.getY(), letter:tLetter, color: machine.paintContext.strokeStyle, size: shapeSize});
 
       pubnub.publish({
         channel: drawChannel,
@@ -295,13 +297,14 @@ const mspaint = {
             machine.paintContext.beginPath();
             machine.paintContext.fillStyle = plots[i].color;
             machine.paintContext.strokeStyle = plots[i].color;
+            var tsize = plots[i].size;
 
             if (plots[i].letter =='') {
-              machine.paintContext.arc(plots[i].x, plots[i].y, CIRCLE_SIZE, 0, 2 * Math.PI, false);
+              machine.paintContext.arc(plots[i].x, plots[i].y, tsize, 0, 2 * Math.PI, false);
               machine.paintContext.fill();
             }
             else if (plots[i].letter =='rect') {
-              machine.paintContext.rect(plots[i].x - RECTANGLE_SIZE/2,plots[i].y - RECTANGLE_SIZE/2, RECTANGLE_SIZE, RECTANGLE_SIZE);
+              machine.paintContext.rect(plots[i].x - tsize/2,plots[i].y - tsize/2, tsize, tsize);
               machine.paintContext.fill();
             }
             else
