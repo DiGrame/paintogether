@@ -208,6 +208,7 @@ const mspaint = {
       }
       else if (drawStyle == 'rectangles') {
         tLetter = "rect"
+        RECTANGLE_SIZE = Math.floor(Math.random() * 10) + 15;
         machine.paintContext.rect(mouse.getX() - RECTANGLE_SIZE/2, mouse.getY() - RECTANGLE_SIZE/2, RECTANGLE_SIZE, RECTANGLE_SIZE);
         machine.paintContext.fill();
       }
