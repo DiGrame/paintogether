@@ -77,7 +77,7 @@ const mspaint = {
     this.setLineJoin("round");
     this.setColor("black");
     this.setLocked(false);
-    this.setDrawstyle('rectangles');
+    this.setDrawstyle('dots');
 
     /* Mouse Capturing Work */
     let machine = this;
