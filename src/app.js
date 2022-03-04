@@ -78,7 +78,7 @@ const mspaint = {
     this.setColor("black");
     this.setLocked(false);
     this.setDrawstyle('dots');
-
+    this.setLocked(true)
     /* Mouse Capturing Work */
     let machine = this;
 
@@ -139,32 +139,6 @@ const mspaint = {
     );
 
 
-
-    document.addEventListener('keydown', (event) => {
-      const keyName = event.key;
-
-      // if (keyName === 'Control' || keyName === 'Alt') {
-      //   // do not alert when only Control key is pressed.
-      //   return;
-      // }
-      //
-      // if (event.ctrlKey && event.altKey) {
-        if (keyName == 'd' || keyName == 'D'
-            || keyName == 'l' || keyName == 'L'
-            || keyName == 'c' || keyName == 'C'
-            || keyName == 'z' || keyName == 'Z'
-            || keyName == 'x' || keyName == 'X'
-            || keyName == 'r' || keyName == 'R'
-            || keyName == 'h' || keyName == 'H'
-          ) {
-            keyCommand(keyName, true);
-          //  alert(`Combination of alt + ctrlKey + ${keyName}`);
-          }
-
-      // } else {
-      //   // alert(`Key pressed ${keyName}`);
-      // }
-    }, false);
 
 
     function keyCommand (whichKey, sendMessage) {
