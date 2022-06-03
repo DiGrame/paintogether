@@ -78,7 +78,7 @@ const mspaint = {
     this.setColor("black");
     this.setLocked(false);
     this.setDrawstyle('dots');
-    this.setLocked(true)
+    this.setLocked(false)
     /* Mouse Capturing Work */
     let machine = this;
 
