@@ -355,6 +355,10 @@ const mspaint = {
     if (meLocked) txt = "*** LOCKED *** "
     document.getElementById("myID").textContent = txt;
   },
+  clearCanvas: function() {
+	this.paintContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+  
   setDrawstyle: function(dstyle){
 
     drawStyle = dstyle;
@@ -376,6 +380,7 @@ const mspaint = {
 
 /* Init Section */
 
+
 window.download = function() {
   let dt = mspaint.canvas.toDataURL();
   dt = dt.replace(
@@ -388,6 +393,11 @@ window.download = function() {
 window.onload = function() {
   mspaint.start("#sketch", "#paint");
 };
+
+window.clearCanvas = function() {
+	mspaint.clearCanvas();
+};
+
 
 /* Modal Section */
 
