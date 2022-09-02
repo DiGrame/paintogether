@@ -382,12 +382,18 @@ const mspaint = {
 
 
 window.download = function() {
-  let dt = mspaint.canvas.toDataURL();
-  dt = dt.replace(
-    /^data:image\/[^;]/,
-    "data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=art.png"
-  );
-  window.location.href = dt;
+  //let dt = mspaint.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  
+    
+	var link = document.createElement("a");
+	link.download = 'Paintogether.png';
+	link.href = mspaint.canvas.toDataURL("image/png");
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	delete link;
+  
+
+  //window.location.href = dt;
 };
 
 window.onload = function() {
